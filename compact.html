@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="style.css" />
+        <link rel="icon" type="image/png" href="https://d1nhio0ox7pgb.cloudfront.net/_img/o_collection_png/green_dark_grey/256x256/plain/tree.png">
+        <title>Tree</title>
+    </head>
+    <body>
+        <div class="box">
+            <canvas id="canvas" width="800" height="600"></canvas>
+        </div>
+        <div class="box">
+            <input type="range" min="1" max="90" value="20" class="slider" id="slider1">
+        </div>
+        <div class="box">
+            <input type="range" min="50" max="85" value="82" class="slider" id="slider2">
+        </div>
+        <div class="box">
+            <input type="range" min="20" max="120" value="95" class="slider" id="slider3">
+        </div>
+        <div class="box">
+            <input type="range" min="1" max="10" value="8" class="slider" id="slider4">
+        </div>
+    </body>
+
+    <footer>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script>
+            var turtle = {
+                x: 0,
+                y: 0,
+                facing: Math.PI,
+                penDown: false,
+                penColor: "#000000",
+                lineWidth: 1
+            };
+
+            var ctx;
+
+            function init(ctx){
+                this.ctx = ctx;
+            }
+
+            function forward(length){
+                ctx.lineWidth = turtle.lineWidth;
+                ctx.strokeStyle = turtle.penColor;
+                if (turtle.penDown == true){
+                    ctx.beginPath();
+                    ctx.moveTo(turtle.x, turtle.y);
+                    ctx.lineTo(turtle.x + length * Math.sin(turtle.facing),
+                                turtle.y + length * Math.cos(turtle.facing));
+                    ctx.stroke();
+                }
+                moveTo(turtle.x + length * Math.sin(turtle.facing),
+                        turtle.y + length * Math.cos(turtle.facing));
+            }
+
+            function backward(length){
+                forward(-length);
+            }
+
+            function moveTo(x, y){
+                turtle.x = x;
+                turtle.y = y;
+            }
+
+            function right(angle){
+                rad = angle * Math.PI / 180;
+                turtle.facing = (turtle.facing + rad) % (2 * Math.PI)
+            }
+
+            function left(angle){
+                rad = angle * Math.PI / 180;
+                turtle.facing = (turtle.facing - rad) % (2 * Math.PI);
+            }
+
+            function penUp(){
+                turtle.penDown = false;
+            }
+
+            function penDown(){
+                turtle.penDown = true;
+            }
+        </script>
+        <script>
+            console.log("script loaded!");
+
+            // creating handle to canvaspane
+            var canvas = document.getElementById('canvas');
+            var ctx = canvas.getContext('2d');
+
+            var slider = document.getElementById('slider1');
+            var slider2 = document.getElementById('slider2');
+            var slider3 = document.getElementById('slider3');
+
+            var angle = slider.value;
+            var ratio = slider2.value / 100;
+            var size = slider3.value;
+            var max = size * ratio ** slider4.value;
+
+            console.log(angle, ratio, size)
+
+            init(ctx);
+
+            function tree(){
+                console.log(angle, ratio, size, max)
+                moveTo(380, 500);
+                branch(size);
+            }
+
+            function branch(length){
+                penDown();
+                forward(length);
+                if (length > max){
+                    left(angle);
+                    branch(length * ratio);
+                    penUp();
+                    backward(length * ratio);
+                    penDown();
+                    right(angle);
+                    right(angle);
+                    branch(length * ratio);
+                    penUp();
+                    backward(length * ratio);
+                    penDown();
+                    left(angle);
+                }
+            }
+
+            slider.oninput = function() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                angle = slider.value;
+                tree();
+            }
+
+            slider2.oninput = function() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ratio = slider2.value / 100;
+                tree();
+            }
+
+            slider3.oninput = function() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                size = slider3.value;
+                tree();
+            }
+
+            slider4.oninput = function() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                max = size * ratio ** slider4.value;
+                tree();
+            }
+
+            tree();
+        </script>
+    </footer>
+</html>

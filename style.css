@@ -1,0 +1,66 @@
+/*
+    Hierarchy:
+    1. ID
+    2. CLASS
+    3. * (All)
+    3. ELEMTENTS
+
+*/
+
+*{
+    margin: 0px;
+    padding: 0px;
+    user-select: none;
+    color: white;
+    text-decoration: none;
+    font-synthesis: style;
+    order: none;
+    outline: 0 none;
+    --back-Color: rgb(28, 40, 51);
+}
+
+body{
+    background-color: var(--back-Color);
+    overflow: hidden;
+}
+
+.box{
+    width: 100%;
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
+.slider {
+    position: relative;
+    -webkit-appearance: none;
+    background-color: transparent;
+    border: 2px white solid;
+    border-radius: 4px;
+    outline: none;
+    height: 30px;
+    width: 800px;
+    margin-left: 10px;
+    opacity: 0.7;
+    transition: opacity .3s;
+
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 29px;
+  border-radius: 2px;
+  background: white;
+  cursor: pointer;
+}
+
+.slider:hover{
+    opacity: 1;
+}
+
+#canvas{
+    margin: 10px;
+    background-color: rgb(213, 219, 219);
+    border: 1px black solid;
+}
